@@ -1,6 +1,30 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#table_correctpt').DataTable({
+        var table = $('#table_correctpt').DataTable({
+            "columns": [{
+                    "data": null,
+                    "defaultContent": "<button class='edit-btn btn btn-warning'>แก้ไข</button>"
+                },
+                {
+                    "data": null,
+                    "defaultContent": "<button class='del-btn btn btn-danger'>ลบ</button>"
+                },
+                {
+                    "data": "BG_ID"
+                },
+                {
+                    "data": "BUDGETPLAN_NAME"
+                },
+                {
+                    "data": "STATUS"
+                },
+                {
+                    "data": "RESPONSIBLE"
+                },
+                {
+                    "data": "TELEPHONE_RES"
+                }
+            ],
             'order': [],
             "processing": true,
             // "serverSide": true,
@@ -45,6 +69,28 @@
                     "paging": false,
                 }
             }
+        });
+
+        $('#table_correctpt tbody').on('click', '.edit-btn', function() {
+            var data = table.row($(this).parents('tr')).data();
+            var id = data.BG_ID; // ดึงค่า ID จากคอลัมน์ที่สาม
+            alert('แก้ไข ลำดับที่: ' + 'ID:' + id);
+
+            window.location.href = '../pages/edit.php';
+            // window.location.href = 'views/edit.php?id=' + id;
+        });
+
+        $('#table_correctpt tbody').on('click', '.del-btn', function() {
+            var data = table.row($(this).parents('tr')).data();
+            // var qcid = data.QC_id; // ดึงค่า ID จากคอลัมน์ที่สาม
+            var id = data.BG_ID; // ดึงค่า ID จากคอลัมน์ที่สาม
+            // window.location.href = 'views/delete.php?id=' + qc_id;
+
+            // delete_QCline(id, qc_id);
+            // เพิ่มโค้ดสำหรับการลบข้อมูลที่นี่
+            // alert('ลบข้อมูล ลำดับที่: '+ qc_id + ' ' + 'ID:' + id);
+            alert('ลบข้อมูล ลำดับที่: ' + 'ID:' + id);
+            // window.location.href = 'views/delete.php?qcid=' + qcid + '&id=' + id;
         });
 
     });

@@ -1,4 +1,8 @@
-<?php include('../include/datatable.php');
+<?php
+include('../include/datatable.php');
+$getdatars = API_ALLdata();
+
+// var_dump($getdatars);
 ?>
 
 <div class="card py-3 my-3">
@@ -10,51 +14,53 @@
         <table id="table_correctpt" class="display" style="width:100%">
             <thead>
                 <tr>
+                    <th>แก้ไข</th>
+                    <th>ลบ</th>
                     <th>รหัสโครงการ</th>
                     <th>ชื่อโครงการ</th>
                     <th>สถานะโครงการ</th>
                     <th>ผู้รับผิดชอบ</th>
                     <th>เบอร์โทรศัพท์</th>
-                    <th>แก้ไข</th>
-                    <th>ลบ</th>
+
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>61</td>
-                    <td>2011-04-25</td>
-                    <td><input class="btn btn-warning" name="edit" type="submit" value="แก้ไข"></td>
-                    <td><input class="btn btn-danger" name="del" type="submit" value="ลบ"></td>
-                </tr>
+                <?php
+                foreach ($getdatars as $dataresult) {
+                    $bgID = $dataresult->BG_ID;
+                    $name = $dataresult->BUDGETPLAN_NAME;
+                    $status = $dataresult->STATUS_PLAN;
+                    $res = $dataresult->RESPONSIBLE;
+                    $tel = $dataresult->TELEPHONE_RES;
+                ?>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><?= $bgID;?></td>
+                        <td><?= $name;?></td>
+                        <td><?= $status;?></td>
+                        <td><?= $res;?></td>
+                        <td><?= $tel;?></td>
+                        
+
+                    </tr>
+                <?php
+                }
+                ?>
 
             </tbody>
             <tfoot>
                 <tr>
+                    <th>แก้ไข</th>
+                    <th>ลบ</th>
                     <th>รหัสโครงการ</th>
                     <th>ชื่อโครงการ</th>
                     <th>สถานะโครงการ</th>
                     <th>ผู้รับผิดชอบ</th>
                     <th>เบอร์โทรศัพท์</th>
-                    <th>แก้ไข</th>
-                    <th>ลบ</th>
                 </tr>
             </tfoot>
         </table>
 
     </div>
 </div>
-
-<?php
-if(isset($_POST['edit'])) {
-    echo 'แก้ไขสำเร็จ';
-    ?>
-
-    <?php
-} elseif(isset($_POST['del'])) {
-    echo 'ลบสำเร็จ';
-
-}
-?>

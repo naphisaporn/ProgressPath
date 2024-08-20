@@ -30,6 +30,7 @@
         background: #7021d2;
         color: #fff;
     }
+
     .cardDashboard {
         background-color: #000;
 
@@ -66,14 +67,20 @@
     }
 </style>
 
-<div oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
-    <div class="cardDashboard card p-5">
-        <div id="YakındaYazı">█ █ █ <span style="color:black">█ █ █ █ █ █ █ █ █ █ </span>31%
-            <br>&gt;
-            Hello Visitor
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;<br>&gt;
-            Dashboard is Coming Soon <span id="cursor">█</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<div class="mt-5" oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+    <div class="card">
+        <div class="card-header">
+            <h4>Dashboard</h4>
+
+        </div>
+        <div class="cardDashboard card-body">
+            <div id="YakındaYazı">█ █ █ <span style="color:black">█ █ █ █ █ █ █ █ █ █ </span>31%
+                <br>&gt;
+                Hello Visitor
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;<br>&gt;
+                Dashboard is Coming Soon <span id="cursor">█</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
         </div>
 
     </div>

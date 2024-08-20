@@ -1,88 +1,167 @@
+<?php
+//header.php
+include('init.php');
+session_start();
+echo 'Current session username: ' . (isset($_SESSION['username']) ? $_SESSION['username'] : 'No user');
 
-<?php 
-include('init.php'); 
+var_dump($_SESSION);
 
-// include('inc_datatable.php');
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // ตรวจสอบข้อมูลล็อกอิน (ตัวอย่าง)
+    if ($username === 'admin' && $password === 'password') { // ตัวอย่างการตรวจสอบ
+        $_SESSION['username'] = $username;
+        header('Location: https://data.rajavithi.go.th/app/progresspath/public/');
+        exit();
+    } else {
+        $error = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+    }
+}
 ?>
-<title>ระบบติดตามโครงการ | ProgressPath</title>
-<link rel="shortcut icon" href="https://data.rajavithi.go.th/app/progresspath/mvc/assets/img/favicon.ico" type="image/x-icon">
 
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ | ProgressPath</title>
+    <link rel="shortcut icon" href="https://data.rajavithi.go.th/app/progresspath/mvc/assets/img/favicon.ico" type="image/x-icon">
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+            top: 100%;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown.show .dropdown-content {
+            display: block;
+        }
+
+        .dropdown .btn-login {
+            background-color: #00bcd4;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown .btn-login:hover {
+            background-color: #0097a7;
+        }
+    </style>
 </head>
 
 <body class="content">
-    <!--Hey! This is the original version
-of Simple CSS Waves-->
-
     <div class="header">
-
-        <!--Content before waves-->
-        <div class="inner-header flex">
-            <!--Just the logo.. Don't mind this-->
-            <div class="title_head">
-                <h1>ระบบติดตามโครงการ</h1>
-                <hr>
-                <h2>ProgressPath</h2>
-            </div>
-            <nav id="navbar" class="navbar navbar-expand-md fixed-top navbar-dark ">
+        <div class="inner-header">
+            <nav id="navbar" class="navbar navbar-expand-md navbar-dark">
                 <div class="container justify-content-end">
-
-                    <button class="navbar-toggler custom-toggler " type="button" data-toggle="collapse" data-target="#navLinks" aria-label="Toogle navigation">
+                    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navLinks" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navLinks">
                         <div class="row" style="width: 100%;">
                             <div class="col-6">
                                 <ul class="navbar-nav">
-
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link impactFont">Home</a>
+                                        <a href="https://data.rajavithi.go.th/app/progresspath/public/" class="nav-link impactFont">หน้าหลัก</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#about-me" class="nav-link impactFont">About</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#proyects" class="nav-link impactFont">Projects</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#contact" class="nav-link impactFont">Contact</a>
+                                        <a href="../pages/insertProject.php" class="nav-link impactFont">เพิ่มโครงการ</a>
                                     </li>
                                 </ul>
                             </div>
                             <div class="col-6">
-                                <a href="https://data.rajavithi.go.th/app/progresspath/mvc/views/loginhr/login/loginHR.php" class="nav-link impactFont" style="text-align: end;">
-                                    <button class="btn btn-outline-light"><i class="fa-solid fa-person"></i> LOGIN</button>
-                                </a>
+                                <div id="loginButton" class="dropdown">
+                                    <button class="btn-login">
+                                        <i class="fa-solid fa-person"></i> เข้าสู่ระบบ
+                                    </button>
+                                    <div class="dropdown-content">
+                                        <a href="https://data.rajavithi.go.th/app/progresspath/pages/login/logout.php" id="logoutLink">ออกจากระบบ</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </nav>
+            <div class="title_head">
+                <h1>ระบบติดตามโครงการ</h1>
+                <h2>ProgressPath</h2>
+            </div>
         </div>
-
-        <!--Waves Container-->
-        <div>
-            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-                <defs>
-                    <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 v44h-352z" />
-                </defs>
-                <g class="parallax">
-                    <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7)" />
-                    <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-                    <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-                    <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
-                </g>
-            </svg>
-        </div>
-        <!--Waves end-->
-
     </div>
-    <!--Header ends-->
 
-    <!-- Content starts-->
-    <!-- <div class="content flex">
-        <p>By.Goodkatz | Free to use </p>
-    </div> -->
-    <!--Content ends -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function getLoginStatus() {
+                return new Promise((resolve) => {
+                    resolve('<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : null; ?>');
+                });
+            }
+
+            getLoginStatus().then(username => {
+                const loginButton = document.getElementById('loginButton');
+                const logoutLink = document.getElementById('logoutLink');
+                if (loginButton) {
+                    if (username) {
+                        loginButton.querySelector('.btn-login').innerHTML = `<i class="fa-solid fa-person"></i> ${username}`;
+                        loginButton.classList.add('logged-in');
+                        loginButton.querySelector('.dropdown-content').style.display = 'block';
+                        logoutLink.href = 'https://data.rajavithi.go.th/app/progresspath/pages/login/logout.php'; // Link to logout page
+                    } else {
+                        loginButton.querySelector('.btn-login').innerHTML = '<i class="fa-solid fa-person"></i> เข้าสู่ระบบ';
+                        loginButton.classList.remove('logged-in');
+                        loginButton.querySelector('.dropdown-content').style.display = 'none';
+                    }
+                } else {
+                    console.error('ไม่พบปุ่มล็อกอิน');
+                }
+            }).catch(error => {
+                console.error('ข้อผิดพลาดในการดึงสถานะการล็อกอิน:', error);
+            });
+
+            // Toggle dropdown on button click
+            document.addEventListener('click', function(event) {
+                const dropdown = document.querySelector('.dropdown');
+                if (dropdown && event.target.closest('.btn-login')) {
+                    dropdown.classList.toggle('show');
+                } else {
+                    dropdown.classList.remove('show');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,3 +1,2 @@
 <?php
-include('../include/content.php');
-?>
+require('../include/content.php');
