@@ -2,9 +2,9 @@
 //header.php
 include('init.php');
 session_start();
-echo 'Current session username: ' . (isset($_SESSION['username']) ? $_SESSION['username'] : 'No user');
+// echo 'Current session username: ' . (isset($_SESSION['username']) ? $_SESSION['username'] : 'No user');
 
-var_dump($_SESSION);
+// var_dump($_SESSION);
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

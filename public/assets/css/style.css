@@ -885,3 +885,13 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active) {
 .btn-login.logged-in:hover {
   background-color: #ffab91; /* สีพื้นหลังใหม่เมื่อ hover สำหรับผู้ใช้ที่ล็อกอินแล้ว */
 }
+
+/*
+* -----------------------------------------
+*              Card header Detail
+* -----------------------------------------
+*/
+
+.carddetail.card {
+  background: #F9FAEA;
+}

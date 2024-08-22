@@ -24,4 +24,21 @@ class research extends Controller
         $this->view->render('xxx', 'json');
         $this->model->API_CHECKLOGIN($username, $password);
     }
+    function filterID()
+    {
+        $this->view->render('xxx', 'json');
+        $this->model->API_filterID();
+    }
+    function first()
+    {
+        $this->view->render('xxx', 'json');
+        $this->model->API_rational();
+    }
+    function purpose()
+    {
+        $this->view->render('xxx', 'json');
+        $this->model->API_purpose();
+    }
+    
+
 }

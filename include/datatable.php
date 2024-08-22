@@ -76,9 +76,36 @@
             var id = data.BG_ID; // ดึงค่า ID จากคอลัมน์ที่สาม
             alert('แก้ไข ลำดับที่: ' + 'ID:' + id);
 
-            window.location.href = '../pages/edit.php';
+            // window.location.href = '../pages/edit.php';
+            window.location.href = '../pages/edit.php?id=' + id;
             // window.location.href = 'views/edit.php?id=' + id;
         });
+        // $('#table_correctpt tbody').on('click', '.edit-btn', function() {
+        //     var data = table.row($(this).parents('tr')).data();
+        //     var id = data.BG_ID; // ดึงค่า ID จากคอลัมน์ที่สาม
+        //     alert('แก้ไข ลำดับที่: ' + 'ID:' + id);
+
+        //     fetch('https://data.rajavithi.go.th/production/API/research/filterID', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': 'Bearer YOUR_TOKEN' // ถ้ามีการใช้ Token สำหรับการยืนยันตัวตน
+        //             },
+        //             body: JSON.stringify({
+        //                 id: id
+        //             }) // ส่งข้อมูลในรูปแบบ JSON
+        //         })
+        //         .then(response => response.json()) // แปลงการตอบกลับจาก API เป็น JSON
+        //         .then(data => {
+        //             console.log('Success:', data);
+        //             // ทำอะไรบางอย่างกับข้อมูลที่ได้รับจาก API
+        //             // เช่น การเปลี่ยนแปลงหน้าที่มีการแสดงข้อมูล
+        //             window.location.href = '../pages/edit.php'; // เปลี่ยน URL ตามต้องการ
+        //         })
+        //         .catch((error) => {
+        //             console.error('Error:', error);
+        //         });
+        // });
 
         $('#table_correctpt tbody').on('click', '.del-btn', function() {
             var data = table.row($(this).parents('tr')).data();

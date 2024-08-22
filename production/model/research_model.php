@@ -74,6 +74,271 @@ class research_model extends Model
             echo 'Error... ';
         }
     }
+    function API_rational()
+    {
+
+        $objPerson = $this->checkJWT();
+        if ($objPerson) {
+
+
+            $sql = "SELECT * from budgetplandata_rational";
+
+            $sth = $this->oracle_bidb->prepare($sql);
+            $sth->setFetchMode(PDO::FETCH_ASSOC);
+            $sth->execute(array());
+            $datasetVariable = $sth->fetchAll();
+
+            if (count($datasetVariable) >= 1) {
+                $responseArray['result'] = TRUE;
+                $responseArray['json_total'] =  count($datasetVariable);
+                $data = array();
+
+                foreach ($datasetVariable as $tempdata) {
+                    $tempArray = array();
+                    $tempArray["BGRJ_ID"] = $tempdata['BGRJ_ID'];
+                    $tempArray["BUDGETPLAN_NAME"] = $tempdata['BUDGETPLAN_NAME'];
+                    $tempArray["RATIONAL"] = $tempdata['RATIONAL'];
+                   
+
+
+
+                    array_push($data, $tempArray);
+                }
+                $responseArray['jsondata'] = $data;
+            } else {
+                $responseArray['result'] = FALSE;
+                $responseArray['jsondata'] = null;
+            }
+            echo json_encode($responseArray, JSON_PRETTY_PRINT);
+        } else {
+            $responseArray['json_result'] = FALSE;
+            $responseArray['json_data'] = null;
+            echo 'Error... ';
+        }
+    }
+    function API_purpose()
+    {
+
+        $objPerson = $this->checkJWT();
+        if ($objPerson) {
+
+
+            $sql = "SELECT * from budgetplandata_purpose";
+
+            $sth = $this->oracle_bidb->prepare($sql);
+            $sth->setFetchMode(PDO::FETCH_ASSOC);
+            $sth->execute(array());
+            $datasetVariable = $sth->fetchAll();
+
+            if (count($datasetVariable) >= 1) {
+                $responseArray['result'] = TRUE;
+                $responseArray['json_total'] =  count($datasetVariable);
+                $data = array();
+
+                foreach ($datasetVariable as $tempdata) {
+                    $tempArray = array();
+                    $tempArray["BGRJ_ID"] = $tempdata['BGRJ_ID'];
+                    $tempArray["BUDGETPLAN_NAME"] = $tempdata['BUDGETPLAN_NAME'];
+                    $tempArray["PURPOSE"] = $tempdata['PURPOSE'];
+                   
+
+
+
+                    array_push($data, $tempArray);
+                }
+                $responseArray['jsondata'] = $data;
+            } else {
+                $responseArray['result'] = FALSE;
+                $responseArray['jsondata'] = null;
+            }
+            echo json_encode($responseArray, JSON_PRETTY_PRINT);
+        } else {
+            $responseArray['json_result'] = FALSE;
+            $responseArray['json_data'] = null;
+            echo 'Error... ';
+        }
+    }
+    // function API_filterID($id)
+    // {
+
+    //     $objPerson = $this->checkJWT();
+    //     if ($objPerson) {
+
+
+    //         $sql = "SELECT * from budgetplandata where bg_id = :id";
+
+    //         // เตรียมและรัน SQL statement
+    //         $sth = $this->oracle_bidb->prepare($sql);
+    //         $sth->bindParam(':id', $id, PDO::PARAM_STR);
+    //         $sth->execute();
+
+    //         // ดึงข้อมูลผลลัพธ์
+    //         $datasetVariable = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+    //         // เตรียม response array
+    //         $responseArray = array();
+
+    //         // $sth = $this->oracle_bidb->prepare($sql);
+
+    //         // $sth->setFetchMode(PDO::FETCH_ASSOC);
+    //         // $sth->execute(array());
+    //         // $datasetVariable = $sth->fetchAll();
+
+    //         if (count($datasetVariable) >= 1) {
+    //             $responseArray['result'] = TRUE;
+    //             $responseArray['json_total'] =  count($datasetVariable);
+    //             $data = array();
+
+    //             foreach ($datasetVariable as $tempdata) {
+    //                 $tempArray = array();
+    //                 $tempArray["BG_ID"] = $tempdata['BG_ID'];
+    //                 $tempArray["BRGJ_ID"] = $tempdata['BRGJ_ID'];
+    //                 $tempArray["ERP_ID"] = $tempdata['ERP_ID'];
+    //                 $tempArray["BUDGETPLAN_NAME"] = $tempdata['BUDGETPLAN_NAME'];
+    //                 $tempArray["ORGANIZE_ID"] = $tempdata['ORGANIZE_ID'];
+    //                 $tempArray["STATUS"] = $tempdata['STATUS'];
+    //                 $tempArray["RESPONSIBLE_ID"] = $tempdata['RESPONSIBLE_ID'];
+    //                 $tempArray["RESPONSIBLE"] = $tempdata['RESPONSIBLE'];
+    //                 $tempArray["TELEPHONE_RES"] = $tempdata['TELEPHONE_RES'];
+    //                 $tempArray["DEPARTMENT_ID"] = $tempdata['DEPARTMENT_ID'];
+    //                 $tempArray["DEPARTMENT"] = $tempdata['DEPARTMENT'];
+    //                 $tempArray["DIVISION"] = $tempdata['DIVISION'];
+    //                 $tempArray["COORDINATOR"] = $tempdata['COORDINATOR'];
+    //                 $tempArray["TELEPHONE_CO"] = $tempdata['TELEPHONE_CO'];
+    //                 $tempArray["STATUS_PLAN"] = $tempdata['STATUS_PLAN'];
+    //                 $tempArray["REASONPLAN"] = $tempdata['REASONPLAN'];
+    //                 $tempArray["STARTDATE"] = $tempdata['STARTDATE'];
+    //                 $tempArray["ENDDATE"] = $tempdata['ENDDATE'];
+    //                 $tempArray["NUMDAYS"] = $tempdata['NUMDAYS'];
+    //                 $tempArray["DURATION"] = $tempdata['DURATION'];
+    //                 $tempArray["ALLOCATECYCLE"] = $tempdata['ALLOCATECYCLE'];
+    //                 $tempArray["ALLOCATEBUDGET"] = $tempdata['ALLOCATEBUDGET'];
+    //                 $tempArray["APPROVEBUDGET"] = $tempdata['APPROVEBUDGET'];
+    //                 $tempArray["SPENDINGPLAN"] = $tempdata['SPENDINGPLAN'];
+    //                 $tempArray["PAYOUTRS"] = $tempdata['PAYOUTRS'];
+    //                 $tempArray["PAYOUTPERCENT"] = $tempdata['PAYOUTPERCENT'];
+
+
+
+    //                 array_push($data, $tempArray);
+    //             }
+    //             $responseArray['jsondata'] = $data;
+    //         } else {
+    //             $responseArray['result'] = FALSE;
+    //             $responseArray['jsondata'] = null;
+    //         }
+    //         echo json_encode($responseArray, JSON_PRETTY_PRINT);
+    //     } else {
+    //         $responseArray['json_result'] = FALSE;
+    //         $responseArray['json_data'] = null;
+    //         echo 'Error... ';
+    //     }
+    // }
+    function API_filterID()
+    {
+        $objPerson = $this->checkJWT();
+        if ($objPerson) {
+            // $bg_id = '670000002';
+            // $bg_id = $id;
+            // $bg_id = addslashes($id);  // ป้องกัน SQL Injection เบื้องต้น
+
+            $sql = "SELECT * FROM budgetplandata";
+
+            $sth = $this->oracle_bidb->prepare($sql);
+            $sth->setFetchMode(PDO::FETCH_ASSOC);
+            $sth->execute(array());
+            $datasetVariable = $sth->fetchAll();
+
+            if (count($datasetVariable) >= 1) {
+                $responseArray['result'] = TRUE;
+                $responseArray['json_total'] =  count($datasetVariable);
+                $data = array();
+
+                foreach ($datasetVariable as $tempdata) {
+                    $tempArray = array();
+                    $tempArray["BG_ID"] = $tempdata['BG_ID'];
+                    $tempArray["BGRJ_ID"] = $tempdata['BGRJ_ID'];
+                    $tempArray["ERP_ID"] = $tempdata['ERP_ID'];
+                    $tempArray["BUDGETPLAN_NAME"] = $tempdata['BUDGETPLAN_NAME'];
+                    $tempArray["ORGANIZE_ID"] = $tempdata['ORGANIZE_ID'];
+                    $tempArray["STATUS"] = $tempdata['STATUS'];
+                    $tempArray["RESPONSIBLE_ID"] = $tempdata['RESPONSIBLE_ID'];
+                    $tempArray["RESPONSIBLE"] = $tempdata['RESPONSIBLE'];
+                    $tempArray["TELEPHONE_RES"] = $tempdata['TELEPHONE_RES'];
+                    $tempArray["DEPARTMENT_ID"] = $tempdata['DEPARTMENT_ID'];
+                    $tempArray["DEPARTMENT"] = $tempdata['DEPARTMENT'];
+                    $tempArray["DIVISION"] = $tempdata['DIVISION'];
+                    $tempArray["COORDINATOR"] = $tempdata['COORDINATOR'];
+                    $tempArray["TELEPHONE_CO"] = $tempdata['TELEPHONE_CO'];
+                    $tempArray["STATUS_PLAN"] = $tempdata['STATUS_PLAN'];
+                    $tempArray["REASONPLAN"] = $tempdata['REASONPLAN'];
+                    $tempArray["STARTDATE"] = $tempdata['STARTDATE'];
+                    $tempArray["ENDDATE"] = $tempdata['ENDDATE'];
+                    $tempArray["NUMDAYS"] = $tempdata['NUMDAYS'];
+                    $tempArray["DURATION"] = $tempdata['DURATION'];
+                    $tempArray["ALLOCATECYCLE"] = $tempdata['ALLOCATECYCLE'];
+                    $tempArray["ALLOCATEBUDGET"] = $tempdata['ALLOCATEBUDGET'];
+                    $tempArray["APPROVEBUDGET"] = $tempdata['APPROVEBUDGET'];
+                    $tempArray["SPENDINGPLAN"] = $tempdata['SPENDINGPLAN'];
+                    $tempArray["PAYOUTRS"] = $tempdata['PAYOUTRS'];
+                    $tempArray["PAYOUTPERCENT"] = $tempdata['PAYOUTPERCENT'];
+
+
+
+                    array_push($data, $tempArray);
+                }
+                $responseArray['jsondata'] = $data;
+            } else {
+                $responseArray['result'] = FALSE;
+                $responseArray['jsondata'] = null;
+            }
+            echo json_encode($responseArray, JSON_PRETTY_PRINT);
+        } else {
+            $responseArray['json_result'] = FALSE;
+            $responseArray['json_data'] = null;
+            echo 'Error... ';
+        }
+    }
+    // function API_filterID($id)
+    // {
+    //     $objPerson = $this->checkJWT();
+    //     if ($objPerson) {
+    //         $bg_id = '670000002';
+    //         // เตรียมการ SQL
+    //         $sql = "SELECT * FROM budgetplandata WHERE bg_id = :bg_id";
+
+    //         // เตรียม statement
+    //         $sth = $this->oracle_bidb->prepare($sql);
+
+    //         // Bind parameter
+    //         $sth->bindParam(':bg_id', $bg_id, PDO::PARAM_STR);
+
+    //         // Execute statement
+    //         $sth->execute();
+
+    //         // ดึงข้อมูลผลลัพธ์
+    //         $datasetVariable = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+    //         // ตรวจสอบว่ามีข้อมูลหรือไม่
+    //         if (count($datasetVariable) >= 1) {
+    //             $responseArray['result'] = TRUE;
+    //             $responseArray['json_total'] = count($datasetVariable);
+    //             $responseArray['jsondata'] = $datasetVariable; // ส่งข้อมูลทั้งหมด
+    //         } else {
+    //             $responseArray['result'] = FALSE;
+    //             $responseArray['jsondata'] = null;
+    //         }
+    //         // ส่งข้อมูลในรูปแบบ JSON
+    //         echo json_encode($responseArray, JSON_PRETTY_PRINT);
+    //     } else {
+    //         $responseArray['json_result'] = FALSE;
+    //         $responseArray['json_data'] = null;
+    //         echo json_encode($responseArray, JSON_PRETTY_PRINT);
+    //     }
+    // }
+
+
+
     function API_CHECKLOGIN($username, $password)
     {
         // ตรวจสอบ JWT
@@ -102,7 +367,7 @@ class research_model extends Model
 
         // เตรียม response array
         $responseArray = array();
-        
+
         if (count($datasetVariable) === 0) {
             echo 'No data found for the provided username.';
             exit;

@@ -1,67 +1,135 @@
 <?php
+
 include('../include/API.php');
 include('../include/header.php');
-$getdatars = API_ALLdata();
+// require_once ('master_Query/funcondb.php'); 
+require_once('../public/master_Query/funcondb.php');
 
-foreach ($getdatars as $dataresult) {
-    $bgID = $dataresult->BG_ID;
-    $bgrjID = $dataresult->BGRJ_ID;
-    $name = $dataresult->BUDGETPLAN_NAME;
-    $status = $dataresult->STATUS_PLAN;
-    $res = $dataresult->RESPONSIBLE;
-    $tel = $dataresult->TELEPHONE_RES;
-    $organize_id = $dataresult->ORGANIZE_ID;
-    $organize = $dataresult->ORGANIE_NAME;
-    $approveBG = $dataresult->APPROVEBUDGET;
-    // Add an example value for $id if it's not set elsewhere
-    $id = $dataresult->ERP_ID; // Assuming this is a field you have in your data
+
+$oci = new funcondb();
+
+
+// if (isset($_POST['id'])) {
+//     $id = $_POST['id'];
+
+//     // เช็คและประมวลผล ID ที่ได้รับ
+//     // ตัวอย่างการใช้ ID ในการดึงข้อมูล
+//     $data = API_filterID($id);
+//     echo $data; // ส่งข้อมูลที่ต้องการกลับไปยัง JavaScript
+// } else {
+//     echo 'ID parameter is missing';
+// }
+
+
+
+// ตรวจสอบและรับค่า 'id' จาก URL
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $bg_id = $_GET['id'];
+    $bg_id_mockup = '670000002';
+
+    // echo "ID ที่ได้รับ: " . htmlspecialchars($id);
+    // echo $bg_id;
+
+    $url_login = "https://data.rajavithi.go.th/production/API/Get_Token/get_token_BIIntra";
+    $tokenmim = gettoken($url_login, $body);
+
+    // $bg_id = $id;
+
+    $url_requestdata = "https://data.rajavithi.go.th/production/API/research/filterID";
+    $body = array("id" => $id);
+    $rq_data = getdata($url_requestdata, $tokenmim, $body);
+
+
+
+    // var_dump($rq_data);
+    // $getdatars as $dataresult
+
+    foreach ($rq_data as $key => $datars) {
+        $bgid = $datars->BG_ID;
+
+        if ($bgid == $bg_id) {
+            // $bgid = $datars->BG_ID;
+            $bgrjID = $datars->BGRJ_ID;
+            $erpID = $datars->ERP_ID;
+            $namebudget = $datars->BUDGETPLAN_NAME;
+            $orgID = $datars->ORGANIZE_ID;
+            $status = $datars->STATUS;
+            $responID = $datars->RESPONSIBLE_ID;
+            $response = $datars->RESPONSIBLE;
+            $phone = $datars->TELEPHONE_RES;
+            $depID = $datars->DEPARTMENT_ID;
+            $dep = $datars->DEPARTMENT;
+            $division = $datars->DIVISION;
+            $coor = $datars->COORDINATOR;
+            $phone_co = $datars->TELEPHONE_CO;
+            $planstatus = $datars->STATUS_PLAN;
+            $reasonplan = $datars->REASONPLAN;
+            $startdateplan = $datars->STARTDATE;
+            $enddateplan = $datars->ENDDATE;
+            $numdays = $datars->NUMDAYS;
+            $duration = $datars->DURATION;
+            $cycle = $datars->ALLOCATECYCLE;
+            $budget = $datars->ALLOCATEBUDGET;
+            $budgetapprove = $datars->APPROVEBUDGET;
+            $spending = $datars->SPENDINGPLAN;
+            $payout = $datars->PAYOUTRS;
+            $percent = $datars->PAYOUTPERCENT;
+        } else {
+            // echo 'I can not find this ID : ' . $bg_id;
+        }
+    }
 }
 ?>
 
 <div class="my-5 mx-3">
-    <div class="card">
+    <div class="carddetail card">
         <div class="card-body">
             <div class="form-group">
                 <div class="row">
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-sm-12 col-md-3">
                         <label>ลำดับโครงการ : </label>
-                        <input type="text" class="form-control" name="researchID" placeholder="ลำดับโครงการ" value="<?= htmlspecialchars($bgrjID); ?>" readonly>
+                        <input type="text" class="form-control" name="researchID" placeholder="ลำดับโครงการ" value="<?= $bgrjID; ?>" disabled>
+                    </div>
+                    <div class="col-sm-12 col-md-3">
+                        <label>รหัสโครงการ : </label>
+                        <input type="text" class="form-control" name="ERPID" placeholder="รหัส ERP" value="<?= $bg_id; ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label>รหัสโครงการ : </label>
-                        <input type="text" class="form-control" name="ERPID" placeholder="รหัส ERP" value="<?= htmlspecialchars($id); ?>" readonly>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-12">
                         <label>ชื่อโครงการ : </label>
-                        <input type="text" class="form-control" name="nameproject" placeholder="ชื่อโครงการ" value="<?= htmlspecialchars($name); ?>" readonly>
+                        <input type="text" class="form-control" name="nameproject" placeholder="ชื่อโครงการ" value="<?= $namebudget; ?>" disabled>
                     </div>
                 </div>
+                <!-- <div class="row">
+                    
+                </div> -->
                 <div class="row">
                     <div class="col-md-6">
                         <label>ผู้รับผิดชอบโครงการ : </label>
-                        <input type="text" class="form-control" name="fullname" placeholder="ผู้รับผิดชอบโครงการ" value="<?= htmlspecialchars($res); ?>" readonly>
+                        <input type="text" class="form-control" name="fullname" placeholder="ผู้รับผิดชอบโครงการ" value="<?= $response; ?>" disabled>
                     </div>
                     <div class="col-md-6">
                         <label>เบอร์โทรติดต่อ : </label>
-                        <input type="text" class="form-control" name="telephone" placeholder="เบอร์โทรติดต่อ" value="<?= htmlspecialchars($tel); ?>" readonly>
+                        <input type="text" class="form-control" name="telephone" placeholder="เบอร์โทรติดต่อ" value="<?= $phone; ?>" disabled>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
                         <label>หน่วยงาน / กลุ่มงาน : </label>
-                        <input type="text" class="form-control" name="department" placeholder="หน่วยงาน / กลุ่มงาน" value="<?= htmlspecialchars($organize); ?>" readonly>
+                        <input type="text" class="form-control" name="department" placeholder="หน่วยงาน / กลุ่มงาน" value="<?= $dep; ?>" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label>งบประมาณ : </label>
-                        <input type="text" class="form-control" name="division" placeholder="งาน" value="<?= htmlspecialchars($approveBG); ?>" readonly>
+                        <input type="text" class="form-control" name="division" placeholder="งบประมาณ" value="<?= $budgetapprove; ?>" disabled>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
 <div class="container">
     <div class="cardDetail card my-5">
         <div class="cardDetailHeader card-header">
@@ -91,19 +159,61 @@ foreach ($getdatars as $dataresult) {
                                 </a>
                             </div>
                         </div>
+                        <?php
+                        $url_retopnal = "https://data.rajavithi.go.th/production/API/research/first";
+                        $body_retopnal = array("id" => $id);
+                        $rq_retopnal = getdata($url_retopnal, $tokenmim, $body_retopnal);
+
+                        foreach ($rq_retopnal as $key => $datars) {
+                            $bg_id = 1;
+                            $bgid = $datars->BGRJ_ID;
+                            if ($bgid == $bg_id) {
+                                $bgid = $datars->BGRJ_ID;
+                                $namebudget = $datars->BUDGETPLAN_NAME;
+                                $rational = htmlspecialchars($datars->RATIONAL);
+                            }
+                        }
+
+                        ?>
 
                         <div class="col-md-9 bhoechie-tab">
                             <div class="bhoechie-tab-content active">
                                 <form class="px-5" action="process_form.php" method="post">
                                     <div class="form-group py-3">
-                                        <label for="rationale">หลักการ และเหตุผล</label>
-                                        <textarea class="form-control" id="rationale" name="rationale" rows="4" required></textarea>
+                                        <!-- <label for="rationale">หลักการ และเหตุผล</label> -->
+                                        <input type="hidden" name="bgrjID" value="<?= $bgrjID; ?>" hidden>
+                                        <input type="hidden" name="bg_id" value="<?= $bg_id; ?>" hidden>
+                                        <input type="hidden" name="nameresearch" value="<?= $namebudget; ?>" hidden>
                                     </div>
+                                    <div class="form-group py-3">
+                                        <label for="rationale">หลักการ และเหตุผล</label>
+                                        <textarea class="form-control" id="rationale" name="rationale" rows="4" value="<?= $rational != NULL ? $rational : ""; ?>" required><?= $rational != NULL ? $rational : ""; ?></textarea>
+                                    </div>
+                                    <?php
+                                    $url_purpose = "https://data.rajavithi.go.th/production/API/research/purpose";
+                                    $body_purpose = array("id" => $id);
+                                    $rq_purpose = getdata($url_purpose, $tokenmim, $body_purpose);
+
+                                    foreach ($rq_purpose as $key => $datars) {
+                                        $bg_id = 1;
+                                        $bgid = $datars->BGRJ_ID;
+                                        if ($bgid == $bg_id) {
+                                            $bgid = $datars->BGRJ_ID;
+                                            $namebudget = $datars->BUDGETPLAN_NAME;
+                                            $purpose = $datars->PURPOSE;
+                                        }
+                                    }
+
+                                    ?>
 
                                     <div class="form-group py-3">
                                         <label for="objectives">วัตถุประสงค์ของโครงการ</label>
                                         <input type="text" class="form-control" id="objectives" name="objectives[]" placeholder="เพิ่มวัตถุประสงค์" required>
                                         <div id="objectivesList" class="mt-2"></div>
+                                        <div class="purposers mt-2">
+                                            <span><?= $purpose != NULL ? var_dump($purpose): ""; ?></span>
+
+                                        </div>
                                         <button type="button" id="addObjective" class="btn btn-outline-info mt-2">เพิ่มวัตถุประสงค์</button>
                                     </div>
 

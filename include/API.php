@@ -65,6 +65,34 @@ function getdata($url, $token, $body)
     return $data1->jsondata;
   }
 }
+// function getdata($url, $token, $body) {
+//   $curl = curl_init();
+
+//   curl_setopt_array($curl, array(
+//       CURLOPT_URL => $url,
+//       CURLOPT_RETURNTRANSFER => true,
+//       CURLOPT_SSL_VERIFYPEER => false,
+//       CURLOPT_ENCODING => '',
+//       CURLOPT_MAXREDIRS => 10,
+//       CURLOPT_TIMEOUT => 0,
+//       CURLOPT_FOLLOWLOCATION => true,
+//       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//       CURLOPT_CUSTOMREQUEST => 'POST',
+//       CURLOPT_POSTFIELDS => json_encode($body), // ใช้ json_encode สำหรับ POST fields
+//       CURLOPT_HTTPHEADER => array(
+//           'Authorization: Bearer ' . $token,
+//           'Content-Type: application/json' // เพิ่ม header นี้หาก API ใช้ JSON
+//       ),
+//   ));
+
+//   $response = curl_exec($curl);
+//   $data1 = json_decode($response);
+//   curl_close($curl);
+
+//   return $data1;
+// }
+
+
 
 function API_ALLdata()
 {
@@ -79,6 +107,26 @@ function API_ALLdata()
 
   return $rq_data;
 }
+function API_filterID($id)
+{
+  // สมมติว่ามีการตั้งค่า $tokenmim ที่ถูกต้อง
+  global $tokenmim;
+  $bg_id = $id;
+
+  $url_requestdata = "https://data.rajavithi.go.th/production/API/research/filterID";
+  $body = array("id" => $bg_id);
+  $rq_data = getdata($url_requestdata, $tokenmim, $body);
+
+  return $rq_data;
+
+  // if ($rq_data && isset($rq_data->result) && $rq_data->result === true) {
+  //     return $rq_data->jsondata;
+  // } else {
+  //     return array('error' => 'ไม่มีข้อมูลสำหรับ ID ที่ระบุ');
+  // }
+}
+
+
 
 function API_CHECKLOGIN($username, $password)
 {
