@@ -98,7 +98,158 @@ class research_model extends Model
                     $tempArray["BGRJ_ID"] = $tempdata['BGRJ_ID'];
                     $tempArray["BUDGETPLAN_NAME"] = $tempdata['BUDGETPLAN_NAME'];
                     $tempArray["RATIONAL"] = $tempdata['RATIONAL'];
-                   
+                    $tempArray["BG_ID"] = $tempdata['BG_ID'];
+                    $tempArray["CREATEDATE"] = $tempdata['CREATEDATE'];
+                    $tempArray["LOCATION"] = $tempdata['LOCATION'];
+                    $tempArray["LOCATION_DETAIL"] = $tempdata['LOCATION_DETAIL'];
+                    $tempArray["STARTDATE"] = $tempdata['STARTDATE'];
+                    $tempArray["ENDDATE"] = $tempdata['ENDDATE'];
+
+
+
+
+
+                    array_push($data, $tempArray);
+                }
+                $responseArray['jsondata'] = $data;
+            } else {
+                $responseArray['result'] = FALSE;
+                $responseArray['jsondata'] = null;
+            }
+            echo json_encode($responseArray, JSON_PRETTY_PRINT);
+        } else {
+            $responseArray['json_result'] = FALSE;
+            $responseArray['json_data'] = null;
+            echo 'Error... ';
+        }
+    }
+    function API_maxpurpose()
+    {
+
+        $objPerson = $this->checkJWT();
+        if ($objPerson) {
+
+
+            $sql = "SELECT bg_id, maxdate, count(bg_id) as countbg_id
+  from (select bg_id, max(createdate) as maxdate
+          from budgetplandata_purpose
+         group by bg_id)
+         where bg_id is not null
+         group by bg_id, maxdate";
+
+            $sth = $this->oracle_bidb->prepare($sql);
+            $sth->setFetchMode(PDO::FETCH_ASSOC);
+            $sth->execute(array());
+            $datasetVariable = $sth->fetchAll();
+
+            if (count($datasetVariable) >= 1) {
+                $responseArray['result'] = TRUE;
+                $responseArray['json_total'] =  count($datasetVariable);
+                $data = array();
+
+                foreach ($datasetVariable as $tempdata) {
+                    $tempArray = array();
+                    $tempArray["BG_ID"] = $tempdata['BG_ID'];
+                    $tempArray["MAXDATE"] = $tempdata['MAXDATE'];
+                    $tempArray["COUNTBG_ID"] = $tempdata['COUNTBG_ID'];
+                  
+
+
+
+
+                    array_push($data, $tempArray);
+                }
+                $responseArray['jsondata'] = $data;
+            } else {
+                $responseArray['result'] = FALSE;
+                $responseArray['jsondata'] = null;
+            }
+            echo json_encode($responseArray, JSON_PRETTY_PRINT);
+        } else {
+            $responseArray['json_result'] = FALSE;
+            $responseArray['json_data'] = null;
+            echo 'Error... ';
+        }
+    }
+    function API_DEP()
+    {
+
+        $objPerson = $this->checkJWT();
+        if ($objPerson) {
+
+
+            $sql = "SELECT * from DEP_BGPLAN where name like 'กลุ่มงาน%'";
+
+            $sth = $this->oracle_bidb->prepare($sql);
+            $sth->setFetchMode(PDO::FETCH_ASSOC);
+            $sth->execute(array());
+            $datasetVariable = $sth->fetchAll();
+
+            if (count($datasetVariable) >= 1) {
+                $responseArray['result'] = TRUE;
+                $responseArray['json_total'] =  count($datasetVariable);
+                $data = array();
+
+                foreach ($datasetVariable as $tempdata) {
+                    $tempArray = array();
+                    $tempArray["GENID"] = $tempdata['GENID'];
+                    $tempArray["MISSIONID"] = $tempdata['MISSIONID'];
+                    $tempArray["GROUPCODE"] = $tempdata['GROUPCODE'];
+                    $tempArray["JOBCODE"] = $tempdata['JOBCODE'];
+                    $tempArray["UNITCODE"] = $tempdata['UNITCODE'];
+                    $tempArray["COSTCENTERID"] = $tempdata['COSTCENTERID'];
+                    $tempArray["NAME"] = $tempdata['NAME'];
+                    
+                  
+
+
+
+
+                    array_push($data, $tempArray);
+                }
+                $responseArray['jsondata'] = $data;
+            } else {
+                $responseArray['result'] = FALSE;
+                $responseArray['jsondata'] = null;
+            }
+            echo json_encode($responseArray, JSON_PRETTY_PRINT);
+        } else {
+            $responseArray['json_result'] = FALSE;
+            $responseArray['json_data'] = null;
+            echo 'Error... ';
+        }
+    }
+    function API_2DEP()
+    {
+
+        $objPerson = $this->checkJWT();
+        if ($objPerson) {
+
+
+            $sql = "SELECT * from DEP_BGPLAN where name like 'งาน%'";
+
+            $sth = $this->oracle_bidb->prepare($sql);
+            $sth->setFetchMode(PDO::FETCH_ASSOC);
+            $sth->execute(array());
+            $datasetVariable = $sth->fetchAll();
+
+            if (count($datasetVariable) >= 1) {
+                $responseArray['result'] = TRUE;
+                $responseArray['json_total'] =  count($datasetVariable);
+                $data = array();
+
+                foreach ($datasetVariable as $tempdata) {
+                    $tempArray = array();
+                    $tempArray["GENID"] = $tempdata['GENID'];
+                    $tempArray["MISSIONID"] = $tempdata['MISSIONID'];
+                    $tempArray["GROUPCODE"] = $tempdata['GROUPCODE'];
+                    $tempArray["JOBCODE"] = $tempdata['JOBCODE'];
+                    $tempArray["UNITCODE"] = $tempdata['UNITCODE'];
+                    $tempArray["COSTCENTERID"] = $tempdata['COSTCENTERID'];
+                    $tempArray["NAME"] = $tempdata['NAME'];
+                    
+                  
+
 
 
 
@@ -123,7 +274,10 @@ class research_model extends Model
         if ($objPerson) {
 
 
-            $sql = "SELECT * from budgetplandata_purpose";
+            // $sql = "SELECT * from budgetplandata_purpose";
+            $sql = "SELECT bg_id,bgrj_id,budgetplan_name,purpose,createdate, max(createdate) as maxdate from budgetplandata_purpose 
+            group by bg_id,bgrj_id,budgetplan_name,purpose,createdate";
+            // $sql = "SELECT BGRJ_ID,BUDGETPLAN_NAME,PURPOSE,BG_ID,CREATEDATE,max(createdate) as maxdate from budgetplandata_purpose";
 
             $sth = $this->oracle_bidb->prepare($sql);
             $sth->setFetchMode(PDO::FETCH_ASSOC);
@@ -140,7 +294,53 @@ class research_model extends Model
                     $tempArray["BGRJ_ID"] = $tempdata['BGRJ_ID'];
                     $tempArray["BUDGETPLAN_NAME"] = $tempdata['BUDGETPLAN_NAME'];
                     $tempArray["PURPOSE"] = $tempdata['PURPOSE'];
-                   
+                    $tempArray["BG_ID"] = $tempdata['BG_ID'];
+                    $tempArray["CREATEDATE"] = $tempdata['CREATEDATE'];
+                    $tempArray["MAXDATE"] = $tempdata['MAXDATE'];
+
+
+
+
+                    array_push($data, $tempArray);
+                }
+                $responseArray['jsondata'] = $data;
+            } else {
+                $responseArray['result'] = FALSE;
+                $responseArray['jsondata'] = null;
+            }
+            echo json_encode($responseArray, JSON_PRETTY_PRINT);
+        } else {
+            $responseArray['json_result'] = FALSE;
+            $responseArray['json_data'] = null;
+            echo 'Error... ';
+        }
+    }
+    function API_maxdate_purpose()
+    {
+
+        $objPerson = $this->checkJWT();
+        if ($objPerson) {
+
+
+            // $sql = "SELECT * from budgetplandata_purpose";
+            $sql = "SELECT bg_id,max(createdate) as maxdate from budgetplandata_purpose group by bg_id";
+            // $sql = "SELECT BGRJ_ID,BUDGETPLAN_NAME,PURPOSE,BG_ID,CREATEDATE,max(createdate) as maxdate from budgetplandata_purpose";
+
+            $sth = $this->oracle_bidb->prepare($sql);
+            $sth->setFetchMode(PDO::FETCH_ASSOC);
+            $sth->execute(array());
+            $datasetVariable = $sth->fetchAll();
+
+            if (count($datasetVariable) >= 1) {
+                $responseArray['result'] = TRUE;
+                $responseArray['json_total'] =  count($datasetVariable);
+                $data = array();
+
+                foreach ($datasetVariable as $tempdata) {
+                    $tempArray = array();
+                    $tempArray["BG_ID"] = $tempdata['BG_ID'];
+                    $tempArray["MAXDATE"] = $tempdata['MAXDATE'];
+
 
 
 

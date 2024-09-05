@@ -39,6 +39,26 @@ class research extends Controller
         $this->view->render('xxx', 'json');
         $this->model->API_purpose();
     }
+    function purpose_maxdate()
+    {
+        $this->view->render('xxx', 'json');
+        $this->model->API_maxdate_purpose();
+    }
+    function maxpurpose()
+    {
+        $this->view->render('xxx', 'json');
+        $this->model->API_maxpurpose();
+    }
+    function dep()
+    {
+        $this->view->render('xxx', 'json');
+        $this->model->API_DEP();
+    }
+    function seconddep()
+    {
+        $this->view->render('xxx', 'json');
+        $this->model->API_2DEP();
+    }
     
 
 }

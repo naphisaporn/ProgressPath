@@ -21,7 +21,7 @@ $oci = new funcondb();
 // }
 
 
-
+$number_of_questions = 5; // คุณสามารถเปลี่ยนค่าได้ตามต้องการ
 // ตรวจสอบและรับค่า 'id' จาก URL
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -155,7 +155,11 @@ if (isset($_GET['id'])) {
                                 </a>
                                 <a href="#" class="list-group-item text-center">
                                     <i class="fa-solid fa-users"></i>
-                                    <h4 class="glyphicon glyphicon-credit-card"></h4><br />ประเมินผลโครงการ / ประโยชน์
+                                    <h4 class="glyphicon glyphicon-credit-card"></h4><br />ประเมินผลโครงการ
+                                </a>
+                                <a href="#" class="list-group-item text-center">
+                                    <i class="fa-solid fa-users"></i>
+                                    <h4 class="glyphicon glyphicon-benefit"></h4><br />ประโยชน์ที่ได้รับ
                                 </a>
                             </div>
                         </div>
@@ -164,11 +168,13 @@ if (isset($_GET['id'])) {
                         $body_retopnal = array("id" => $id);
                         $rq_retopnal = getdata($url_retopnal, $tokenmim, $body_retopnal);
 
+                        // var_dump($rq_retopnal);
+
                         foreach ($rq_retopnal as $key => $datars) {
-                            $bg_id = 1;
-                            $bgid = $datars->BGRJ_ID;
+                            // $bg_id = 1;
+                            $bgid = $datars->BG_ID;
                             if ($bgid == $bg_id) {
-                                $bgid = $datars->BGRJ_ID;
+                                $bgid = $datars->BG_ID;
                                 $namebudget = $datars->BUDGETPLAN_NAME;
                                 $rational = htmlspecialchars($datars->RATIONAL);
                             }
@@ -194,13 +200,18 @@ if (isset($_GET['id'])) {
                                     $body_purpose = array("id" => $id);
                                     $rq_purpose = getdata($url_purpose, $tokenmim, $body_purpose);
 
+
+                                    // var_dump($rq_purpose);
                                     foreach ($rq_purpose as $key => $datars) {
-                                        $bg_id = 1;
-                                        $bgid = $datars->BGRJ_ID;
+
+                                        // $bg_id = 1;
+                                        $bgid = $datars->BG_ID;
                                         if ($bgid == $bg_id) {
                                             $bgid = $datars->BGRJ_ID;
                                             $namebudget = $datars->BUDGETPLAN_NAME;
                                             $purpose = $datars->PURPOSE;
+                                            $datecreate = $datars->CREATEDATE;
+                                            $maxdate = $datars->MAXDATE;
                                         }
                                     }
 
@@ -211,42 +222,148 @@ if (isset($_GET['id'])) {
                                         <input type="text" class="form-control" id="objectives" name="objectives[]" placeholder="เพิ่มวัตถุประสงค์" required>
                                         <div id="objectivesList" class="mt-2"></div>
                                         <div class="purposers mt-2">
-                                            <span><?= $purpose != NULL ? var_dump($purpose): ""; ?></span>
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+
+                                                        <tr>
+                                                            <th>ลำดับที่</th>
+                                                            <th>วัตถุประสงค์</th>
+
+                                                            <!-- <th>ลำดีบที่</th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        $url_maxdate = "https://data.rajavithi.go.th/production/API/research/purpose_maxdate";
+                                                        $body_maxdate = array("id" => $id);
+                                                        $rq_maxdate = getdata($url_maxdate, $tokenmim, $body_maxdate);
+                                                        $url_maxp = "https://data.rajavithi.go.th/production/API/research/maxpurpose";
+                                                        $body_maxp = array("id" => $id);
+                                                        $rq_maxp = getdata($url_maxp, $tokenmim, $body_maxp);
+
+
+                                                        // var_dump($rq_maxdate);
+
+                                                        foreach ($rq_maxdate as $keymax => $max) {
+                                                            foreach ($rq_purpose as $key => $rs) {
+                                                                foreach ($rq_maxp as $key => $maxp) {
+                                                                    $datecreate = $rs->CREATEDATE;
+                                                                    $max_bgID = $max->BG_ID;
+                                                                    $max_date = $max->MAXDATE;
+                                                                    $maxp = $maxp->COUNTBG_ID;
+                                                                    $maxp_ID = $maxp->BG_ID;
+                                                                    // var_dump($rq_maxp);
+                                                                    if ($bg_id == $max_bgID && $datecreate == $max_date) {
+
+                                                                        $number_of_questions = $maxp;
+
+                                                                        if ($number_of_questions > 0):
+                                                                            for ($i = 1; $i <= $number_of_questions; $i++):
+                                                                                $p = $rs->PURPOSE; // ดึงค่า PURPOSE
+                                                                                // var_dump($p);
+
+
+
+
+
+
+                                                        ?>
+                                                                                <tr>
+
+
+                                                                                    <td><?= $i; ?></td>
+                                                                                    <td><?= htmlspecialchars($p); ?></td>
+
+                                                                                </tr>
+
+                                                        <?php
+                                                                            endfor;
+                                                                        endif;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                        ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
                                         </div>
                                         <button type="button" id="addObjective" class="btn btn-outline-info mt-2">เพิ่มวัตถุประสงค์</button>
                                     </div>
+                                    <?php
+                                    foreach ($rq_retopnal as $key => $datars) {
+                                        $bgid = $datars->BG_ID;
+                                        if ($bgid == $bg_id) {
+                                            $bgid = $datars->BG_ID;
+                                            $namebudget = $datars->BUDGETPLAN_NAME;
+                                            $location = $datars->LOCATION;
+                                            $locationdetail = $datars->LOCATION_DETAIL;
+                                            $startdate = $datars->STARTDATE;
+                                            $enddate = $datars->ENDDATE;
+
+                                            switch ($location) {
+                                                case 'Government':
+                                                    $check = 'checked';
+                                                    $loca = 1;
+                                                    $detail = $datars->LOCATION_DETAIL;
+                                                    break;
+                                                case 'Private':
+                                                    $check = 'checked';
+                                                    $loca = 2;
+                                                    // $detail = $datars->LOCATION_DETAIL;
+                                                    $detail = 'ห้องประชุม';
+                                                    break;
+                                            }
+                                        }
+                                    }
+
+
+
+
+                                    ?>
 
                                     <div class="form-group py-3">
                                         <label>สถานที่ดำเนินการ</label><br>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-check" style="text-align: start;">
-                                                    <input type="radio" class="form-check-input" id="gove_place" name="location_type" value="Government">
+                                                    <input type="radio" class="form-check-input" id="gove_place" name="location_type" value="Government" <?= ($loca == 1) ? $check : ''; ?> required>
                                                     <label class="form-check-label" for="gove_place">สถานที่ราชการ (ระบุ)</label>
-                                                    <input type="text" class="form-control mt-2" id="gove_text" name="gove_text" placeholder="โปรดระบุ" disabled>
+                                                    <input type="text" class="form-control mt-2" id="gove_text" name="gove_text" placeholder="โปรดระบุ" value="<?php echo ($loca == 1) ? $detail : ''; ?>" <?php echo ($loca == 1) ? $detail : 'disabled'; ?>>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-check" style="text-align: start;">
-                                                    <input type="radio" class="form-check-input" id="private_place" name="location_type" value="Private">
+                                                    <input type="radio" class="form-check-input" id="private_place" name="location_type" value="Private" <?= ($loca == 2) ? $check : ''; ?>>
                                                     <label class="form-check-label" for="private_place">สถานที่เอกชน (ระบุ)</label>
-                                                    <input type="text" class="form-control mt-2" id="private_text" name="private_text" placeholder="โปรดระบุ" disabled>
+                                                    <input type="text" class="form-control mt-2" id="private_text" name="private_text" placeholder="โปรดระบุ" value="<?php echo ($loca == 2) ? $detail : ''; ?>" <?php echo ($loca == 2) ? $detail : 'disabled'; ?>>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+
+
+                                    <?php
+                                    $startdate = (new DateTime())->format('Y-m-d');
+                                    $enddate = (new DateTime())->format('Y-m-d');
+                                    ?>
+
+
 
                                     <div class="form-group">
                                         <label for="start_date">ระยะเวลาโครงการ</label>
                                         <div class="input-group row" style="justify-content: center;">
                                             <div class="start col-md-6">
                                                 <label for="start_date">วันที่เริ่มต้นโครงการ</label>
-                                                <input type="date" class="form-control" id="start_date" name="start_date" placeholder="Start Date" required>
+                                                <input type="date" class="form-control" id="start_date" name="start_date" placeholder="Start Date" value="<?= $startdate; ?>" required>
                                             </div>
                                             <div class="end col-md-6">
                                                 <label for="end_date">วันที่สิ้นสุดโครงการ</label>
-                                                <input type="date" class="form-control ml-2" id="end_date" name="end_date" placeholder="End Date" required>
+                                                <input type="date" class="form-control ml-2" id="end_date" name="end_date" placeholder="End Date" value="<?= $enddate; ?>" required>
                                             </div>
                                         </div>
                                     </div>
@@ -272,9 +389,17 @@ if (isset($_GET['id'])) {
                                     <h4>การติดตาม</h4>
                                     <?php include('follow_benefit.php'); ?>
                                 </div>
-                                <div>
-                                    <h4>ประโยชน์</h4>
-                                </div>
+
+                            </div>
+                            <div class="bhoechie-tab-content">
+
+
+                                <h4>ประโยชน์ที่ได้รับ</h4>
+
+                                <?php include('benefit.php'); ?>
+
+
+
                             </div>
                         </div>
                     </div>
@@ -286,6 +411,7 @@ if (isset($_GET['id'])) {
 
 <script>
     $(document).ready(function() {
+        var counter = 0; // ตัวแปรเพื่อเก็บลำดับข้อ
         $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
             e.preventDefault();
             $(this).siblings('a.active').removeClass("active");
@@ -295,9 +421,48 @@ if (isset($_GET['id'])) {
             $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
         });
 
+        function updateCounter() {
+            $('#objectivesList .form-group').each(function(index) {
+                $(this).find('label').text('ข้อที่ ' + (index + 1));
+            });
+        }
+
+        function loadObjectives() {
+            // ดึงข้อมูลจากฐานข้อมูล (จำลองด้วยตัวอย่างข้อมูล)
+            var data = [];
+
+            $('#objectivesList').empty(); // เคลียร์รายการเก่า
+            counter = data.length;
+
+            data.forEach(function(item) {
+                var newObjective = '<div class="form-group">' +
+                    '<label>ข้อที่ ' + item.sequence + '</label>' +
+                    '<input type="hidden" name="objectives[' + item.id + '][id]" value="' + item.id + '">' +
+                    '<input type="hidden" name="objectives[' + item.id + '][sequence]" value="' + item.sequence + '">' +
+                    '<input type="text" class="form-control mt-2" name="objectives[' + item.id + '][purpose]" value="' + item.purpose + '">' +
+                    '<button type="button" class="btn btn-danger btn-sm removeObjective mt-2">ลบ</button>' +
+                    '</div>';
+                $('#objectivesList').append(newObjective);
+            });
+        }
+
+        loadObjectives(); // โหลดข้อมูลเมื่อเริ่มต้น
+
         $('#addObjective').on('click', function() {
-            var newObjective = '<input type="text" class="form-control mt-2" name="objectives[]" placeholder="Enter objective">';
+            counter++; // เพิ่มลำดับข้อทุกครั้งที่คลิก
+
+            var newObjective = '<div class="form-group">' +
+                '<label>ข้อที่ ' + counter + '</label>' +
+                '<input type="hidden" name="objectives[new][' + counter + '][sequence]" value="' + counter + '">' +
+                '<input type="text" class="form-control mt-2" name="objectives[new][' + counter + '][purpose]" placeholder="กรอก วัตถุประสงค์">' +
+                '<button type="button" class="btn btn-danger btn-sm removeObjective mt-2">ลบ</button>' +
+                '</div>';
+
             $('#objectivesList').append(newObjective);
+        });
+        $('#addBenefit').on('click', function() {
+            var newBenefit = '<input type="text" class="form-control mt-2" name="benefit[]" placeholder="กรอก ประโยชน์ที่ได้รับ">';
+            $('#benefitList').append(newBenefit);
         });
 
         $('input[name="location_type"]').on('change', function() {
@@ -310,6 +475,18 @@ if (isset($_GET['id'])) {
             }
         });
     });
+
+    $(document).on('click', '.removeObjective', function() {
+        $(this).closest('.form-group').remove();
+        updateCounter(); // ปรับปรุงเลขข้อหลังจากลบรายการ
+    });
+
+    function updateCounter() {
+        $('#objectivesList .form-group').each(function(index) {
+            $(this).find('label').text('ข้อที่ ' + (index + 1));
+            $(this).find('input[name$="[sequence]"]').val(index + 1);
+        });
+    }
 </script>
 
 <?php

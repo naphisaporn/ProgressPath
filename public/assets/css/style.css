@@ -42,6 +42,21 @@
 /* .content {
   background-color:var(--mainbackgroud);
 } */
+/*
+* ---------------------------------------------
+*         insert project
+* ---------------------------------------------
+*/
+
+/* ทำให้แน่ใจว่า Select2 CSS ไม่ถูกเขียนทับ */
+/* .select2-container--default .select2-selection--single {
+  height: 38px; /* ความสูงตามต้องการ */
+/* } 
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  line-height: 36px; /* ความสูงตามต้องการ */
+/* }  */
 
 @import url(//fonts.googleapis.com/css?family=Lato:300:400);
 
@@ -893,5 +908,5 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active) {
 */
 
 .carddetail.card {
-  background: #F9FAEA;
+  background: #f9faea;
 }

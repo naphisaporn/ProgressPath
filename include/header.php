@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เข้าสู่ระบบ | ProgressPath</title>
+    <title>ระบบติดตามโครงการ | ProgressPath</title>
     <link rel="shortcut icon" href="https://data.rajavithi.go.th/app/progresspath/mvc/assets/img/favicon.ico" type="image/x-icon">
     <style>
         .dropdown {
@@ -97,6 +97,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </li>
                                     <li class="nav-item">
                                         <a href="../pages/insertProject.php" class="nav-link impactFont">เพิ่มโครงการ</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../pages/login/createUser.php" class="nav-link impactFont">สร้าง Account</a>
                                     </li>
                                 </ul>
                             </div>

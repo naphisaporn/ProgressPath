@@ -66,6 +66,10 @@ include('../../include/init.php');
 
 
 <div class="admin-box">
+    <a href="https://data.rajavithi.go.th/app/progresspath/public/" class="btn btn-outline-info">
+        กลับหน้าหลัก
+    </a>
+
     <h2>Create New User</h2>
     <form id="create_user_form">
         <p class="field">

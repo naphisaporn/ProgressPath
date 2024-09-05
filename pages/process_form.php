@@ -5,6 +5,8 @@ $oci = new funcondb();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize input data
+    // $timestamp = date('2024/08/26');
+    $timestamp = date('d/m/Y');
     $bgrjID = $_POST['bgrjID'];
     $bg_id = $_POST['bg_id'];
     $name = $_POST['nameresearch'];
@@ -20,13 +22,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($locationType === 'Private') {
         $locationDetail = htmlspecialchars($_POST['private_text']);
     }
+//     bgrj_id         VARCHAR2(10),
+//   budgetplan_name VARCHAR2(50),
+//   rational        VARCHAR2(2000),
+//   bg_id           VARCHAR2(50),
+//   createdate      DATE,
+//   location        VARCHAR2(255),
+//   location_detail VARCHAR2(255),
+//   startdate       DATE,
+//   enddate 
 
     // Insert data into database
-    $sql_rational = "INSERT INTO budgetplandata_rational (bgrj_id, budgetplan_name, rational) VALUES ('$bgrjID', '$name', '$rationale')";
+    $sql_rational = "INSERT INTO budgetplandata_rational (bgrj_id, budgetplan_name, rational,bg_id,createdate,location,location_detail,startdate,enddate) VALUES ('$bgrjID', '$name', '$rationale', '$bg_id', '$timestamp', '$locationType', '$locationDetail','$startDate','$endDate')";
     $objInsert = $oci->insertRecord($sql_rational);
 
     foreach ($objectives as $obj_research) {
-        $sql_purpose = "INSERT INTO budgetplandata_purpose (bgrj_id, budgetplan_name, purpose) VALUES ('$bgrjID', '$name', '$obj_research')";
+        $sql_purpose = "INSERT INTO budgetplandata_purpose (bgrj_id, budgetplan_name, purpose,bg_id,createdate) VALUES ('$bgrjID', '$name', '$obj_research','$bg_id', '$timestamp')";
         $objInsert = $oci->insertRecord($sql_purpose);
     }
 
@@ -50,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Redirect or perform additional actions here
-                                        window.location.href = "https://data.rajavithi.go.th/app/progresspath/pages/edit.php?id=' . $bg_id . '";
+                                        window.location.href = "https://data.rajavithi.go.th/app/progresspath/pages/edit.php?id=' . $bg_id . '" ;
 
                 }
             });
